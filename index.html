@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#071725" />
+  <meta name="description" content="אנציקלופדיית PWA אינטראקטיבית לדגי Monster Fish ודגים בעלי שמות shark שאינם כרישים." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>Monster Fish – אנציקלופדיית דגי ענק</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="eyebrow">PWA • ללא מפתח API</p>
+      <h1>Monster Fish</h1>
+      <p>אנציקלופדיה אינטראקטיבית לדגי ענק, טורפים ו״כרישים״ שאינם כרישים.</p>
+      <div class="hero__actions">
+        <button id="installBtn" class="btn primary" hidden>התקנת היישום</button>
+        <button id="randomBtn" class="btn">דג אקראי</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="controls" aria-label="כלי חיפוש וסינון">
+      <label class="search">
+        <span>חיפוש</span>
+        <input id="searchInput" type="search" placeholder="שם עברי, אנגלי או מדעי…" autocomplete="off" />
+      </label>
+      <label>
+        <span>קבוצה</span>
+        <select id="groupFilter">
+          <option value="all">הכול</option>
+          <option value="monster">Monster Fish</option>
+          <option value="fake-shark">Shark בשם בלבד</option>
+          <option value="dangerous">בעלי פוטנציאל לפציעה</option>
+        </select>
+      </label>
+      <div class="count" id="resultCount" aria-live="polite"></div>
+    </section>
+
+    <section id="fishGrid" class="grid" aria-label="רשימת הדגים"></section>
+  </main>
+
+  <dialog id="fishDialog">
+    <button class="close" id="closeDialog" aria-label="סגירה">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <footer>
+    <p>התמונות נטענות בזמן אמת מ־Wikimedia Commons לפי השם המדעי. נתוני גודל הם נתונים מתועדים/מקובלים ולא הבטחה לגודל של כל פרט.</p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

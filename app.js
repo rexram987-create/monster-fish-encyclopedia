@@ -55,6 +55,9 @@ async function openFish(i){
     <div class="detail-section"><h3>גודל ומשקל</h3><p><strong>אורך:</strong> ${f.length}<br><strong>משקל:</strong> ${f.weight}</p><p class="notice">נתוני שיא משתנים בין מקורות. היישום מעדיף טווחים מדעיים ומדידות מתועדות על פני סיפורי דיג לא־מאומתים.</p></div>
     <div class="detail-section"><h3>אטימולוגיה</h3><p>${f.ety}</p></div>
     <div class="detail-section"><h3>סיפור התיעוד המדעי האירופי</h3><p>${f.doc}</p></div>
+    <div class="detail-section"><h3>תפוצה ובית גידול</h3><p><strong>תפוצה:</strong> ${f.range||'מידע יתווסף בהמשך'}<br><strong>בית גידול:</strong> ${f.habitat||'מידע יתווסף בהמשך'}</p></div>
+    <div class="detail-section"><h3>תזונה</h3><p>${f.diet||'מידע יתווסף בהמשך'}</p></div>
+    <div class="detail-section"><h3>מצב שימור</h3><p>${f.conservation||'יש לבדוק ברשימת IUCN העדכנית'}</p></div>
     <div class="detail-section"><h3>סכנה לבני אדם</h3><p>${f.danger}</p></div>
     <div class="detail-section"><h3>מקורות מומלצים לאימות</h3><p>${f.sources.join(' • ')}</p><div class="source-links"><a target="_blank" rel="noopener" href="https://www.fishbase.se/summary/${encodeURIComponent(f.sci)}">FishBase</a><a target="_blank" rel="noopener" href="https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(f.sci)}&title=Special:MediaSearch&type=image">Wikimedia Commons</a></div></div>
   </div>`;

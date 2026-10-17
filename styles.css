@@ -11,3 +11,7 @@ dialog{width:min(880px,94vw);max-height:92vh;border:1px solid var(--border);bord
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
 .image-caption{color:var(--muted);font-size:.88rem;line-height:1.6;margin:0 0 1rem}
+.narration-controls{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem}
+.btn:disabled{opacity:.5;cursor:default;filter:none}
+.narration-status{color:var(--accent2);line-height:1.6;min-height:1.6em;margin:.6rem 0 .2rem}
+.narration-help{color:var(--muted);font-size:.88rem;line-height:1.6;margin:.2rem 0 1rem}

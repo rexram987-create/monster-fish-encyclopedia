@@ -8,35 +8,16 @@ const closeBtn=document.getElementById('closeDialog');
 const randomBtn=document.getElementById('randomBtn');
 const installBtn=document.getElementById('installBtn');
 let deferredPrompt=null;
-const imageCache=new Map();
-
-function commonsSearchUrl(name){
-  const q=encodeURIComponent(name);
-  return `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${q}%20filetype:bitmap&gsrnamespace=6&gsrlimit=1&prop=imageinfo&iiprop=url&iiurlwidth=900&format=json&origin=*`;
-}
-async function getImage(name){
-  if(imageCache.has(name)) return imageCache.get(name);
-  try{
-    const r=await fetch(commonsSearchUrl(name)); const j=await r.json();
-    const pages=j?.query?.pages||{}; const p=Object.values(pages)[0];
-    const url=p?.imageinfo?.[0]?.thumburl || p?.imageinfo?.[0]?.url || '';
-    imageCache.set(name,url); return url;
-  }catch(e){ return ''; }
-}
 function tags(f){
   const labels={monster:'Monster Fish','fake-shark':'Shark בשם בלבד',dangerous:'עלול לפצוע'};
   return f.groups.map(g=>`<span class="chip">${labels[g]}</span>`).join('');
 }
 function card(f,i){
   return `<article class="card" tabindex="0" role="button" data-i="${i}" aria-label="פתיחת פרטים על ${f.he}">
-    <div class="card__image" data-image="${f.sci}"><span class="skeleton">טוען תמונה מ־Wikimedia Commons…</span></div>
+    <div class="card__image"><img loading="lazy" decoding="async" src="${f.image}" alt="${f.he} — המחשה שנוצרה בבינה מלאכותית"></div>
     <div class="card__body"><h2>${f.he}</h2><div>${f.en}</div><div class="latin">${f.sci}</div><div class="chips">${tags(f)}</div>
       <div class="stats"><div class="stat"><b>אורך</b>${f.length}</div><div class="stat"><b>משקל</b>${f.weight}</div></div>
     </div></article>`;
-}
-async function hydrateImages(root=document){
-  const nodes=[...root.querySelectorAll('[data-image]')];
-  nodes.forEach(async n=>{const url=await getImage(n.dataset.image); if(url){n.innerHTML=`<img loading="lazy" src="${url}" alt="${n.dataset.image}" referrerpolicy="no-referrer">`}else{n.innerHTML='<span class="skeleton">לא נמצאה תמונה זמינה</span>';}});
 }
 function filtered(){
   const q=search.value.trim().toLowerCase(); const g=group.value;
@@ -46,12 +27,12 @@ function filtered(){
 }
 function render(){
   const list=filtered(); count.textContent=`${list.length} דגים`;
-  grid.innerHTML=list.map(f=>card(f,f._i)).join(''); hydrateImages(grid);
+  grid.innerHTML=list.map(f=>card(f,f._i)).join('');
 }
 async function openFish(i){
-  const f=FISH_DATA[i]; if(!f)return; const image=await getImage(f.sci);
-  content.innerHTML=`<div class="detail-hero">${image?`<img src="${image}" alt="${f.he}" referrerpolicy="no-referrer">`:''}</div>
-  <div class="detail-body"><div class="chips">${tags(f)}</div><h2>${f.he}</h2><div>${f.en}</div><div class="latin">${f.sci}</div>
+  const f=FISH_DATA[i]; if(!f)return; const image=f.image;
+  content.innerHTML=`<div class="detail-hero">${image?`<img src="${image}" alt="${f.he} — המחשה שנוצרה בבינה מלאכותית">`:''}</div>
+  <div class="detail-body"><p class="image-caption">${f.imageCaption}</p><div class="chips">${tags(f)}</div><h2>${f.he}</h2><div>${f.en}</div><div class="latin">${f.sci}</div>
     <div class="detail-section"><h3>גודל ומשקל</h3><p><strong>אורך:</strong> ${f.length}<br><strong>משקל:</strong> ${f.weight}</p><p class="notice">נתוני שיא משתנים בין מקורות. היישום מעדיף טווחים מדעיים ומדידות מתועדות על פני סיפורי דיג לא־מאומתים.</p></div>
     <div class="detail-section"><h3>אטימולוגיה</h3><p>${f.ety}</p></div>
     <div class="detail-section"><h3>סיפור התיעוד המדעי האירופי</h3><p>${f.doc}</p></div>
@@ -59,7 +40,7 @@ async function openFish(i){
     <div class="detail-section"><h3>תזונה</h3><p>${f.diet||'מידע יתווסף בהמשך'}</p></div>
     <div class="detail-section"><h3>מצב שימור</h3><p>${f.conservation||'יש לבדוק ברשימת IUCN העדכנית'}</p></div>
     <div class="detail-section"><h3>סכנה לבני אדם</h3><p>${f.danger}</p></div>
-    <div class="detail-section"><h3>מקורות והערות בדיקה</h3><p>הצלבת מקורות: ${f.reviewedAt==='2026-10-17'?'17.10.2026':f.reviewedAt||'טרם תועדה'}. תאריך זה אינו תאריך הערכת השימור.</p>${f.reviewNote?`<p class="notice">${f.reviewNote}</p>`:''}<div class="source-links">${(f.references||[]).map(r=>`<a target="_blank" rel="noopener" href="${r.url}">${r.label}</a>`).join(' • ')}</div><p>מצבי השימור הוצלבו עם הערכות IUCN המוצגות ב־FishBase; לא כל דפי IUCN היו נגישים ישירות בזמן הבדיקה.</p><div class="source-links"><a target="_blank" rel="noopener" href="https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(f.sci)}&title=Special:MediaSearch&type=image">חיפוש תמונות ב־Wikimedia Commons</a></div></div>
+    <div class="detail-section"><h3>מקורות והערות בדיקה</h3><p>הצלבת מקורות: ${f.reviewedAt==='2026-10-17'?'17.10.2026':f.reviewedAt||'טרם תועדה'}. תאריך זה אינו תאריך הערכת השימור.</p>${f.reviewNote?`<p class="notice">${f.reviewNote}</p>`:''}<div class="source-links">${(f.references||[]).map(r=>`<a target="_blank" rel="noopener" href="${r.url}">${r.label}</a>`).join(' • ')}</div><p>מצבי השימור הוצלבו עם הערכות IUCN המוצגות ב־FishBase; לא כל דפי IUCN היו נגישים ישירות בזמן הבדיקה.</p></div>
   </div>`;
   dialog.showModal();
 }

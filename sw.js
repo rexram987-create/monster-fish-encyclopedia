@@ -1,4 +1,4 @@
-const CACHE='monster-fish-v6-generated-images';
+const CACHE='monster-fish-v7-narration';
 const CORE=['./','./index.html','./styles.css','./data.js','./app.js','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png',
   './images/fish/arapaima-gigas.webp',
   './images/fish/hydrocynus-goliath.webp',

@@ -59,7 +59,7 @@ async function openFish(i){
     <div class="detail-section"><h3>תזונה</h3><p>${f.diet||'מידע יתווסף בהמשך'}</p></div>
     <div class="detail-section"><h3>מצב שימור</h3><p>${f.conservation||'יש לבדוק ברשימת IUCN העדכנית'}</p></div>
     <div class="detail-section"><h3>סכנה לבני אדם</h3><p>${f.danger}</p></div>
-    <div class="detail-section"><h3>מקורות מומלצים לאימות</h3><p>${f.sources.join(' • ')}</p><div class="source-links"><a target="_blank" rel="noopener" href="https://www.fishbase.se/summary/${encodeURIComponent(f.sci)}">FishBase</a><a target="_blank" rel="noopener" href="https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(f.sci)}&title=Special:MediaSearch&type=image">Wikimedia Commons</a></div></div>
+    <div class="detail-section"><h3>מקורות והערות בדיקה</h3><p>הצלבת מקורות: ${f.reviewedAt==='2026-10-17'?'17.10.2026':f.reviewedAt||'טרם תועדה'}. תאריך זה אינו תאריך הערכת השימור.</p>${f.reviewNote?`<p class="notice">${f.reviewNote}</p>`:''}<div class="source-links">${(f.references||[]).map(r=>`<a target="_blank" rel="noopener" href="${r.url}">${r.label}</a>`).join(' • ')}</div><p>מצבי השימור הוצלבו עם הערכות IUCN המוצגות ב־FishBase; לא כל דפי IUCN היו נגישים ישירות בזמן הבדיקה.</p><div class="source-links"><a target="_blank" rel="noopener" href="https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(f.sci)}&title=Special:MediaSearch&type=image">חיפוש תמונות ב־Wikimedia Commons</a></div></div>
   </div>`;
   dialog.showModal();
 }
